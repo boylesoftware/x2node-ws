@@ -1,0 +1,31 @@
+{
+  "name": "x2node-webservice",
+  "version": "1.0.0-snapshot",
+  "description": "RESTful web services framework.",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint .",
+    "preversion": "npm test",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/boylesoftware/x2node-webservice.git"
+  },
+  "author": "Lev Himmelfarb <lev@boylesoftware.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/boylesoftware/x2node-webservice/issues"
+  },
+  "homepage": "https://github.com/boylesoftware/x2node-webservice#readme",
+  "engines": {
+    "node": ">=4.3.2"
+  },
+  "dependencies": {
+    "x2node-common": "^1.1.0",
+    "x2node-records": "^2.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.17.1"
+  }
+}
