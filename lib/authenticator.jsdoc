@@ -1,0 +1,6 @@
+/**
+ * Interface for web-service call authenticators.
+ *
+ * @interface Authenticator
+ * @memberof module:x2node-webservices
+ */

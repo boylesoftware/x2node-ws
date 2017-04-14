@@ -6,7 +6,27 @@
 'use strict';
 
 const Application = require('./lib/application.js');
+const ServiceResponse = require('./lib/service-response.js');
 
+
+/**
+ * Node.js <code>http.IncomingMessage</code> object.
+ *
+ * @external http.IncomingMessage
+ * @see {@link https://nodejs.org/dist/latest-v4.x/docs/api/http.html#http_class_http_incomingmessage}
+ */
+/**
+ * Node.js <code>http.ServerResponse</code> object.
+ *
+ * @external http.ServerResponse
+ * @see {@link https://nodejs.org/dist/latest-v4.x/docs/api/http.html#http_class_http_serverresponse}
+ */
+/**
+ * Node.js <code>net.Socket</code> object.
+ *
+ * @external net.Socket
+ * @see {@link https://nodejs.org/dist/latest-v4.x/docs/api/net.html#net_class_net_socket}
+ */
 
 /**
  * Application configuration options.
@@ -30,4 +50,15 @@ const Application = require('./lib/application.js');
 exports.createApplication = function(options) {
 
 	return new Application(options || {});
+};
+
+/**
+ * Create new empty response object.
+ *
+ * @param {number} statusCode HTTP response status code.
+ * @returns {module:x2node-webservices~ServiceResponse} Service response object.
+ */
+exports.createResponse = function(statusCode) {
+
+	return new ServiceResponse(statusCode);
 };
