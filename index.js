@@ -32,11 +32,16 @@ const ServiceResponse = require('./lib/service-response.js');
  * Application configuration options.
  *
  * @typedef {Object} ApplicationOptions
- * @property {number} initialRequestTimeout Timeout in milliseconds for the
- * client to issue the HTTP request complete with headers after opening
- * connection to the web service. The default is 30 seconds.
+ * @property {number} connectionIdleTimeout Timeout in milliseconds for
+ * inactivity on the HTTP connection when activity is expected from the client.
+ * If the timeout occurs before the server starts sending the response, a 408
+ * (Request Timeout) response is sent and the connection is closed. If timeout
+ * happens after the response headers have been sent, the connection is quitely
+ * closed. The default is 30 seconds.
  * @property {number} maxRequestHeadersCount Maximum allowed number of incoming
  * HTTP request headers. The default is 50.
+ * @property {number} maxRequestSize Maximum allowed size of request payload in
+ * bytes. The default is 2048.
  */
 
 /**
