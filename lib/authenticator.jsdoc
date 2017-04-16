@@ -2,13 +2,13 @@
  * Interface for web-service call authenticators.
  *
  * @interface Authenticator
- * @memberof module:x2node-webservices
+ * @memberof module:x2node-ws
  */
 /**
  * Authenticate the call.
  *
- * @function module:x2node-webservices.Authenticator#authenticate
- * @param {module:x2node-webservices~ServiceCall} call The call.
+ * @function module:x2node-ws.Authenticator#authenticate
+ * @param {module:x2node-ws~ServiceCall} call The call.
  * @returns {Promise.<module:x2node-common.Actor} Authenticated actor, or
  * <code>null</code> if could not authenticate.
  */
@@ -17,7 +17,7 @@
  * the authenticator a chance to add any authenticator-specific headers to the
  * response.
  *
- * @function module:x2node-webservices.Authenticator#addResponseHeaders
- * @param {module:x2node-webservices~ServiceCall} call The call.
- * @param {module:x2node-webservices~ServiceResponse} response The response.
+ * @function module:x2node-ws.Authenticator#addResponseHeaders
+ * @param {module:x2node-ws~ServiceCall} call The call.
+ * @param {module:x2node-ws~ServiceResponse} response The response.
  */

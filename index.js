@@ -1,7 +1,7 @@
 /**
  * Central module for building RESTful web services.
  *
- * @module x2node-webservices
+ * @module x2node-ws
  * @requires module:x2node-common
  */
 'use strict';
@@ -49,9 +49,9 @@ const ServiceResponse = require('./lib/service-response.js');
  * Create application the represents the web service. The application must be
  * configured before it's run and starts responding to the incoming requests.
  *
- * @param {module:x2node-webservices~ApplicationOptions} [options] Application
+ * @param {module:x2node-ws~ApplicationOptions} [options] Application
  * configuration options.
- * @returns {module:x2node-webservices~Application} The application.
+ * @returns {module:x2node-ws~Application} The application.
  */
 exports.createApplication = function(options) {
 
@@ -62,7 +62,7 @@ exports.createApplication = function(options) {
  * Create new empty response object.
  *
  * @param {number} statusCode HTTP response status code.
- * @returns {module:x2node-webservices~ServiceResponse} Service response object.
+ * @returns {module:x2node-ws~ServiceResponse} Service response object.
  */
 exports.createResponse = function(statusCode) {
 

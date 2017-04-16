@@ -3,12 +3,12 @@
  * HTTP response payloads given the content type.
  *
  * @interface Marshaller
- * @memberof modules:x2node-webservices
+ * @memberof modules:x2node-ws
  */
 /**
  * Serialize the specified object for sending it in an HTTP response.
  *
- * @function modules:x2node-webservices.Marshaller#serialize
+ * @function modules:x2node-ws.Marshaller#serialize
  * @param {Object} obj Object to serialize.
  * @param {string} contentType Content type (may have optional charset argument).
  * @returns {external:Buffer} Serialized data.
@@ -16,7 +16,7 @@
 /**
  * Deserialize the specified buffer into an object.
  *
- * @function modules:x2node-webservices.Marshaller#deserialize
+ * @function modules:x2node-ws.Marshaller#deserialize
  * @param {external:Buffer} data Binary data to deserialize.
  * @param {string} contentType Content type (may have optional charset argument).
  * @returns {Object} The deserialized object.

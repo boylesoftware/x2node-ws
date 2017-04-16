@@ -2,7 +2,7 @@
  * Interface for web-service call handlers.
  *
  * @interface Handler
- * @memberof module:x2node-webservices
+ * @memberof module:x2node-ws
  */
 /**
  * Tell if the call is allowed from the security/permissions point of view. By
@@ -12,7 +12,7 @@
  * there is an authenticated actor or not. If handler does not provide
  * <code>isAllowed()</code> method, all calls are allowed to proceed.
  *
- * @function module:x2node-webservices.Handler#isAllowed
- * @param {module:x2node-webservices~ServiceCall} call The call.
+ * @function module:x2node-ws.Handler#isAllowed
+ * @param {module:x2node-ws~ServiceCall} call The call.
  * @returns {boolean} <code>true</code> if the call is allowed.
  */
