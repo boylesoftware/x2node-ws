@@ -16,3 +16,15 @@
  * @param {module:x2node-ws~ServiceCall} call The call.
  * @returns {boolean} <code>true</code> if the call is allowed.
  */
+/**
+ * Called to respond to the HTTP method same as the function's name. The returned
+ * value can be a [ServiceResponse]{@link module:x2node-ws~ServiceResponse}
+ * object, an <code>Object</code>, in which case it is serialized as JSON, a
+ * <code>null</code> to send back an HTTP 204 (No Content) response, or anything
+ * else, in which case it is converted to a string and sent back as plain text.
+ * The returned value can also be a <code>Promise</code> of any of the above.
+ *
+ * @function module:x2node-ws.Handler#[METHOD]
+ * @param {module:x2node-ws~ServiceCall} call The call.
+ * @returns {*} The response.
+ */

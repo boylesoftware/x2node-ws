@@ -9,8 +9,9 @@
  *
  * @function module:x2node-ws.Authenticator#authenticate
  * @param {module:x2node-ws~ServiceCall} call The call.
- * @returns {Promise.<module:x2node-common.Actor} Authenticated actor, or
- * <code>null</code> if could not authenticate.
+ * @returns {(module:x2node-common.Actor|Promise.<module:x2node-common.Actor>)}
+ * Authenticated actor, <code>null</code> if could not authenticate, or a
+ * <code>Promise</code> of the above.
  */
 /**
  * If present on the authenticator, called before sending HTTP response to give
