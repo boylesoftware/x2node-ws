@@ -1,5 +1,5 @@
 {
-  "name": "x2node-webservices",
+  "name": "x2node-ws",
   "version": "1.0.0-alpha.0",
   "description": "RESTful web services framework.",
   "keywords": [
@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/boylesoftware/x2node-webservices.git"
+    "url": "git+https://github.com/boylesoftware/x2node-ws.git"
   },
   "author": "Lev Himmelfarb <lev@boylesoftware.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/boylesoftware/x2node-webservices/issues"
+    "url": "https://github.com/boylesoftware/x2node-ws/issues"
   },
-  "homepage": "https://github.com/boylesoftware/x2node-webservices#readme",
+  "homepage": "https://github.com/boylesoftware/x2node-ws#readme",
   "engines": {
     "node": ">=4.3.2"
   },
