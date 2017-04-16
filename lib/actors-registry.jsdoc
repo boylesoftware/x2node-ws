@@ -1,0 +1,12 @@
+/**
+ * Interface for actors registries.
+ *
+ * @interface ActorsRegistry
+ * @memberof module:x2node-webservices
+ */
+/**
+ * @function module:x2node-webservices.ActorsRegistry#lookupActor
+ * @param {string} handle Actor handle from the authenticator.
+ * @returns {Promise.<module:x2node-common.Actor>} Actor record, or
+ * <code>null</code> if none exists for the handle.
+ */

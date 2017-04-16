@@ -2,6 +2,7 @@
  * Central module for building RESTful web services.
  *
  * @module x2node-webservices
+ * @requires module:x2node-common
  */
 'use strict';
 
