@@ -22,7 +22,11 @@
  * object, an <code>Object</code>, in which case it is serialized as JSON, a
  * <code>null</code> to send back an HTTP 204 (No Content) response, or anything
  * else, in which case it is converted to a string and sent back as plain text.
- * The returned value can also be a <code>Promise</code> of any of the above.
+ * The returned value can also be a <code>Promise</code> of any of the above. If
+ * the promise is rejected with a
+ * [ServiceResponse]{@link module:x2node-ws~ServiceResponse}, the response is
+ * sent back to the client. If rejected with anything else, an HTTP 500 (Internal
+ * Server Error) response is sent back.
  *
  * @function module:x2node-ws.Handler#[METHOD]
  * @param {module:x2node-ws~ServiceCall} call The call.
