@@ -68,3 +68,15 @@ exports.createResponse = function(statusCode) {
 
 	return new ServiceResponse(statusCode);
 };
+
+/**
+ * Tell if the provided object is response object (that is an instance of
+ * [ServiceResponse]{@link module:x2node-ws~ServiceResponse}).
+ *
+ * @param {*} obj Object to test.
+ * @returns {boolean} <code>true</code> if response object.
+ */
+exports.isResponse = function(obj) {
+
+	return (obj instanceof ServiceResponse);
+};

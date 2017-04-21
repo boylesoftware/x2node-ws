@@ -3,18 +3,7 @@
  *
  * @interface Handler
  * @memberof module:x2node-ws
- */
-/**
- * Tell if the call is allowed from the security/permissions point of view. By
- * the time the handler is asked, the authenticated actor, if any, is set on the
- * provided service call object. Returning <code>false</code> will cause either
- * a 401 (Unauthorized) or a 403 (Forbidden) HTTP response depending on whether
- * there is an authenticated actor or not. If handler does not provide
- * <code>isAllowed()</code> method, all calls are allowed to proceed.
- *
- * @function module:x2node-ws.Handler#isAllowed
- * @param {module:x2node-ws~ServiceCall} call The call.
- * @returns {boolean} <code>true</code> if the call is allowed.
+ * @extends module:x2node-ws.Authorizer
  */
 /**
  * Called to respond to the HTTP method same as the function's name. The returned

@@ -1,0 +1,16 @@
+/**
+ * Interface for web-service call authorizers.
+ *
+ * @interface Authorizer
+ * @memberof module:x2node-ws
+ */
+/**
+ * Tell if the call is authorized to proceed. Returning <code>false</code> will
+ * cause either a 401 (Unauthorized) or a 403 (Forbidden) HTTP response depending
+ * on whether there is an authenticated actor or not.
+ *
+ * @function module:x2node-ws.Authorizer#isAllowed
+ * @param {module:x2node-ws~ServiceCall} call The call.
+ * @returns {(boolean|Promise.<boolean>)} <code>true</code> if the call is
+ * allowed.
+ */
