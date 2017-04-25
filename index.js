@@ -43,6 +43,11 @@ const ServiceResponse = require('./lib/service-response.js');
  * HTTP request headers. The default is 50.
  * @property {number} maxRequestSize Maximum allowed size of request payload in
  * bytes. The default is 2048.
+ * @property {(string|Array.<string>)} allowedOrigins List (comma-separated
+ * string or an array) of allowed CORS origins. If not provided, the default is
+ * to allow any origin.
+ * @property {number} corsPreflightMaxAge Maximum age in seconds for caching CORS
+ * preflight responses on the client. The default is 20 days.
  */
 
 /**

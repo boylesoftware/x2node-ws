@@ -21,3 +21,11 @@
  * @param {module:x2node-ws~ServiceCall} call The call.
  * @returns {*} The response.
  */
+/**
+ * If present on the handler, gives it a chance to add handler-specific headers
+ * to an OPTIONS HTTP request response.
+ *
+ * @function module:x2node-ws.Handler#OPTIONS
+ * @param {module:x2node-ws~ServiceCall} call The call.
+ * @param {module:x2node-ws~ServiceResponse} call The response.
+ */
