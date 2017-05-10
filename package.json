@@ -1,6 +1,6 @@
 {
   "name": "x2node-ws",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0",
   "description": "RESTful web services framework.",
   "keywords": [
     "webservice",
