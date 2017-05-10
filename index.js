@@ -85,3 +85,6 @@ exports.isResponse = function(obj) {
 
 	return (obj instanceof ServiceResponse);
 };
+
+// export basic authenticator
+exports.BasicAuthenticator = require('./lib/basic-authenticator.js');
