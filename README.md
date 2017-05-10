@@ -13,6 +13,7 @@ This is a low-level module. For higher level web service building functionality 
 * [Endpoints](#endpoints)
   * [Service Call](#service-call)
   * [Service Response](#service-response)
+  * [Call Authorization](#call-authorization)
   * [The OPTIONS Method](#the-options-method)
 * [Authenticators](#authenticators)
   * [Actors Registry](#actors-registry)
@@ -132,7 +133,7 @@ Once the `Application` object is completely configured, it can be started using 
 
 The web service API is represented by the _endpoints_. An API endpoint is a specific HTTP request URI pattern and a collection of HTTP request methods that can be sent to it. The endpoint call processing logic is implemented in the _endpoint handler_. The handlers are where the most of the application logic is coded.
 
-Handlers are associated with URI patterns to create API endpoints using `Application` object's `addEndpoint(uriPattern, handler)` method. For every HTTP method that the handler supports, it it has a method with the HTTP method's name, all caps (e.g. `GET`, `POST`, etc.). If a request is sent to the endpoint using an HTTP method not supported by the handler, an HTTP 405 (Method Not Allowed) response is sent back to the client. Otherwise, the corresponding method on the handler is called and it return value is used to create the HTTP response.
+Handlers are associated with URI patterns to create API endpoints using `Application` object's `addEndpoint(uriPattern, handler)` method. For every HTTP method that the handler supports, it has a method with the HTTP method's name, all caps (e.g. `GET()`, `POST()`, etc.). If a request is sent to the endpoint using an HTTP method not supported by the handler, an HTTP 405 (Method Not Allowed) response is sent back to the client. Otherwise, the corresponding method on the handler is called and it return value is used to create the HTTP response.
 
 ### Service Call
 
@@ -210,6 +211,10 @@ All of the response construction `addXXX()` and `setXXX()` methods return the re
 
 The `x2node-ws` module, in addition to the `createResponse()` function, also exposes a function called `isResponse()`. It takes an object as its single argument and returns `true` if the provided object is a `ServiceResponse`.
 
+### Call Authorization
+
+An enpoint handler can provide an optional method called `isAllowed()`, which is called by the framework before any service call is forwarded to the main processing method to give the handler an early chance to check if the actor associated with the call is allowed to perform it. The method, if defined, receives the `ServiceCall` object as its only argument with the `actor` property set. The method returns a Boolean or a `Promise` of it. If it is `true`, the call is forwarded to the endpoint handler's main call processing method. If it is `false`, the call is aborted and the client gets either an HTTP 401 (Unauthorized) response if the request is not authenticated (`actor` property on the call is `null`) or an HTTP 403 (Forbidden) response if it is.
+
 ### The OPTIONS Method
 
 The `OPTIONS` handler method, if present, is special. The framework takes care of responding to the `OPTIONS` requests on its own, but before sending the response it can give the handler a chance to participate in building the response if it defines an `OPTIONS` method. As opposed to the normal HTTP method handler methods, the `OPTIONS` method receives two arguments: the `ServiceCall` and the `ServiceResponse`. It can add headers to the provided `ServiceResponse`, if it needs to, and the return value of the method is ignored.
@@ -261,11 +266,11 @@ A JWT-based authenticator implementation (for OAuth 2.0, etc.) is provided by th
 
 ## Authorizers
 
-An individual endpoint handler can make the decision if the authenticated actor is authorized to make the call or not and return the corresponding response. However, often the same call authorization logic is applied across a whole bunch of endpoints. Instead of replicating the same logic in every handler, the application can register an `Authorizer` for a URI pattern that covers all the protected endpoints using the `Application` object's `addAuthorizer()` method. The first argument of the method is the URI pattern and the second argument is an implementation of the `Authorizer` interface, which includes a single method:
+An individual endpoint handler can have an `isAllowed()` method where it makes the decision if the authenticated actor is authorized to make the call or not. However, often the same call authorization logic is applied across a whole bunch of endpoints. Instead of replicating the same logic in every handler, the application can register an `Authorizer` for a URI pattern that covers all the protected endpoints using the `Application` object's `addAuthorizer()` method. The first argument of the method is the URI pattern and the second argument is an implementation of the `Authorizer` interface, which includes a single `isAllowed()` method defined the same way as the one on the endpoint handler:
 
 * `isAllowed(call)` - Tell if the specified by the `call` argument `ServiceCall` is allowed to be performed by the actor in the `ServiceCall.actor` property. The method can return a Boolean or a `Promise` of it. If it is `true`, the call is forwarded further to other matching authorizers and utlimately to the endpoint handler. If it is `false`, no other authorizers are called, no handler is called, and the client gets either an HTTP 401 (Unauthorized) response if the request is not authenticated or an HTTP 403 (Forbidden) response if it is.
 
-As opposed to the authenticators and endpoint handlers, multiple authorizers can be matched against a request URI. If so, they are called in a sequence in the same order as they were added to the `Application` object. Only if all the authorizers in the chain tell that the call is allowed, the call is forwarded further to the endpoint handler.
+As opposed to the authenticators and endpoint handlers, multiple authorizers can be matched against a request URI. If so, they are called in a sequence in the same order as they were added to the `Application` object. If the handler also has an `isAllowed()` method, it is called last. Only if all the authorizers in the chain and the handler's `isAllowed()` method, if any, tell that the call is allowed, the call is forwarded further to the endpoint handler's main call processing method.
 
 ## Marshallers
 
