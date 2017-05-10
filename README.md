@@ -162,7 +162,7 @@ The methods on the handler receive a `ServiceCall` object as its only argument. 
 
 * `entity` - An object with the unmarshalled request payload, or `null` if none.
 
-* `entityContentType` - If `entity` is present, this is the request payload content type (all lower-case, stripped of any parameters such as `charset`).
+* `entityContentType` - If `entity` is present, this is the request payload content type (all lower-case, stripped of any parameters such as "charset").
 
 ### Service Response
 
