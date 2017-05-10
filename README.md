@@ -112,7 +112,7 @@ The module's `createApplication()` function that builds and returns the runnable
 
 * `maxRequestSize` - Maximum allowed size of request payload in bytes. If exceeded, an HTTP 413 (Payload Too Large) response is send back to the client. The default is 2048.
 
-* `allowedOrigins` - This is used to configure the [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS). The option is a list (comma-separated string or an array) of allowed CORS origins (e.g. "http://<span></span>www.example.com", etc.). If the front-end application that calls the web service is only available from certain specific URLs, it is recommended to configure the CORS to make certain types of attacks, such as CSRF, harder. If not provided, the default is to allow any origin.
+* `allowedOrigins` - This is used to configure the [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS). The option is a list (comma-separated string or an array) of allowed CORS origins (e.g. "http&#58;//www&#46;example&#46;com", etc.). If the front-end application that calls the web service is only available from certain specific URLs, it is recommended to configure the CORS to make certain types of attacks, such as CSRF, harder. If not provided, the default is to allow any origin.
 
 * `corsPreflightMaxAge` - Part of CORS configuration, maximum age in seconds for caching CORS preflight responses on the client (see "Access-Control-Max-Age" HTTP response header). The default is 20 days.
 
