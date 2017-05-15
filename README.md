@@ -109,7 +109,7 @@ The module's `createApplication()` function that builds and returns the runnable
 
 * `connectionIdleTimeout` - Timeout in milliseconds for inactivity on the HTTP connection when activity is expected from the client (waiting for the request, reading the request body, accepting the server response). If the timeout occurs before the server starts sending the response, an HTTP 408 (Request Timeout) response is sent back to the client and the connection is closed. If timeout happens after the response headers have been sent, the connection is quitely closed. The default is 30 seconds.
 
-* `maxRequestHeadersCount` - Maximum allowed number of incoming HTTP request headers. The default is 50. This corresponds to the _Node.js_ HTTP module's [maxHeadersCount](https://nodejs.org/docs/v4.3.2/api/http.html#http_server_maxheaderscount) parameter.
+* `maxRequestHeadersCount` - Maximum allowed number of incoming HTTP request headers. The default is 50. This corresponds to the _Node.js_ HTTP module's [maxHeadersCount](https://nodejs.org/docs/latest-v4.x/api/http.html#http_server_maxheaderscount) parameter.
 
 * `maxRequestSize` - Maximum allowed size of request payload in bytes. If exceeded, an HTTP 413 (Payload Too Large) response is send back to the client. The default is 2048.
 
@@ -127,7 +127,7 @@ Once the `Application` object is created, the following methods are used to conf
 
 * `addMarshaller(contentType, marshaller)` - Associate a marshaller implementation with a request/response content type. Marshallers are responsible for converting HTTP request and response entities to and from JavaScript objects. Out-of-the-box, the `Application` includes a JSON marshaller automatically associated with content types "application/json", "application/json-patch+json" and "application/merge-patch+json". If a request is received with payload and "Content-Type" header, for which the application does not have a marshaller, it responds with an HTTP 415 (Unsupported Media Type) response. See [Marshallers](#marshallers) section for information on how to add customer marshallers for other content types.
 
-Once the `Application` object is completely configured, it can be started using its `run()` method. The method takes a single argument, which is the HTTP port, on which the application will be listening for the incoming requests. The method ultimately ends up calling standard _Node.js_ HTTP server [listen()](https://nodejs.org/docs/v4.3.2/api/http.html#http_server_listen_port_hostname_backlog_callback) method.
+Once the `Application` object is completely configured, it can be started using its `run()` method. The method takes a single argument, which is the HTTP port, on which the application will be listening for the incoming requests. The method ultimately ends up calling standard _Node.js_ HTTP server [listen()](https://nodejs.org/docs/latest-v4.x/api/http.html#http_server_listen_port_hostname_backlog_callback) method.
 
 ## Endpoints
 
@@ -143,11 +143,11 @@ The methods on the handler receive a `ServiceCall` object as its only argument. 
 
 * `timestamp` - The timestamp when the call was received. `Date.now()` is used to get the timestamp.
 
-* `httpRequest` - The original _Node.js_ [http.IncomingMessage](https://nodejs.org/docs/v4.3.2/api/http.html#http_class_http_incomingmessage) representing the HTTP request.
+* `httpRequest` - The original _Node.js_ [http.IncomingMessage](https://nodejs.org/docs/latest-v4.x/api/http.html#http_class_http_incomingmessage) representing the HTTP request.
 
 * `method` - The request method, all caps. This is a shortcut for `httpRequest.method`.
 
-* `requestUrl` - Fully parsed request URL represented by a _Node.js_ [Url](https://nodejs.org/docs/v4.3.2/api/url.html) object. The query string is parsed.
+* `requestUrl` - Fully parsed request URL represented by a _Node.js_ [Url](https://nodejs.org/docs/latest-v4.x/api/url.html) object. The query string is parsed.
 
 * `authenticator` - The authenticator used to authenticate the request, if any. This is the authenticator added to the `Application` via its `addAuthenticator()` method and matched against the request URI.
 
@@ -191,9 +191,9 @@ The most specific way of creating a service call response is by using the module
 
   * An object, in which case it is serialized using a marshaller associated with the specified `contentType`. Custom marshallers can be registered on the `Application` via its `addMarshaller()` method.
 
-  * A _Node.js_ [Buffer](https://nodejs.org/docs/v4.3.2/api/buffer.html), in which case the buffer's binary data is sent in the response body.
+  * A _Node.js_ [Buffer](https://nodejs.org/docs/latest-v4.x/api/buffer.html), in which case the buffer's binary data is sent in the response body.
 
-  * A _Node.js_ [stream.Readable](https://nodejs.org/docs/v4.3.2/api/stream.html#stream_class_stream_readable). If used, the response is sent using "chunked" transfer encoding (see HTTP specification's [Chunked Transfer Coding](https://tools.ietf.org/html/rfc7230#section-4.1)).
+  * A _Node.js_ [stream.Readable](https://nodejs.org/docs/latest-v4.x/api/stream.html#stream_class_stream_readable). If used, the response is sent using "chunked" transfer encoding (see HTTP specification's [Chunked Transfer Coding](https://tools.ietf.org/html/rfc7230#section-4.1)).
 
   If the `contentType` argument is not provided, "application/json" is assumed.
 
@@ -276,15 +276,15 @@ As opposed to the authenticators and endpoint handlers, multiple authorizers can
 
 Marshallers are used to deserialize (unmarshal) HTTP request entities into JavaScript objects and to serialize (marshal) JavaScript objects into HTTP response entities. Marshallers are associated with content types (values of the "Content-Type" HTTP header). By default, the `Application` includes a JSON marshaller associated with the three content types: "application/json", "application/json-patch+json" and "application/merge-patch+json". A custom marshaller can be added to the `Application` object using its `addMarshaller()` method. The method takes two arguments: the content type and an implementation of the `Marshaller` interface, which includes two methods:
 
-* `serialize(obj, contentType)` - Serialize the specified by the `obj` argument object into the binary data for the specified `contentType`. The `contentType` argument may include an optional "charset" parameter. The method returns a _Node.js_ [Buffer](https://nodejs.org/docs/v4.3.2/api/buffer.html) object with the serialized data.
+* `serialize(obj, contentType)` - Serialize the specified by the `obj` argument object into the binary data for the specified `contentType`. The `contentType` argument may include an optional "charset" parameter. The method returns a _Node.js_ [Buffer](https://nodejs.org/docs/latest-v4.x/api/buffer.html) object with the serialized data.
 
-* `deserialize(data, contentType)` - Deserialize the [Buffer](https://nodejs.org/docs/v4.3.2/api/buffer.html) provided as the `data` argument into a JavaScript object using the specified `contentType`. The `contentType` argument may include an optional "charset" parameter. The method returns the deserialized object. If the binary data in the buffer is invalid and cannot be deserialized, the method must throw an `X2DataError` (see [x2node-common](https://www.npmjs.com/package/x2node-common) module).
+* `deserialize(data, contentType)` - Deserialize the [Buffer](https://nodejs.org/docs/latest-v4.x/api/buffer.html) provided as the `data` argument into a JavaScript object using the specified `contentType`. The `contentType` argument may include an optional "charset" parameter. The method returns the deserialized object. If the binary data in the buffer is invalid and cannot be deserialized, the method must throw an `X2DataError` (see [x2node-common](https://www.npmjs.com/package/x2node-common) module).
 
 ## Terminating Application
 
 Once the `Application` object's `run()` method is called, _Node.js_ process will keep running and listening to the incoming requests on the specified TCP port. To stop the web service application, either of the following signals can be sent to it: `SIGHUP`, `SIGINT` (the Ctrl+C), `SIGTERM` (standard system signal used to terminate background processes) or `SIGBREAK` (Ctrl+Break on _Windows_).
 
-The `Application` object is an [EventEmitter](https://nodejs.org/docs/v4.3.2/api/events.html#events_class_eventemitter), which emits a "shutdown" signal when the HTTP server closes all the connections. This allows to gracefully shutdown any application internal services, such as, for example, database connection pools:
+The `Application` object is an [EventEmitter](https://nodejs.org/docs/latest-v4.x/api/events.html#events_class_eventemitter), which emits a "shutdown" signal when the HTTP server closes all the connections. This allows to gracefully shutdown any application internal services, such as, for example, database connection pools:
 
 ```javascript
 const mysql = require('mysql');
