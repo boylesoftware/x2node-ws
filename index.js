@@ -33,6 +33,11 @@ const ServiceResponse = require('./lib/service-response.js');
  * Application configuration options.
  *
  * @typedef {Object} ApplicationOptions
+ * @property {string} apiVersion Version of the API exposed by the application.
+ * If not specified, <code>NODE_ENV</code> environment variable is examined. If
+ * its value is "development", the version is set to the current timestamp so
+ * that it changes each time the application is restarted. Otherwise, the version
+ * is read from the main module's <code>package.json</code>.
  * @property {number} connectionIdleTimeout Timeout in milliseconds for
  * inactivity on the HTTP connection when activity is expected from the client.
  * If the timeout occurs before the server starts sending the response, a 408

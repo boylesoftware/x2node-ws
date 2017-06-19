@@ -107,6 +107,8 @@ The module uses `X2_APP` section for debug logging. Add it to `NODE_DEBUG` envir
 
 The module's `createApplication()` function that builds and returns the runnable `Application` object can optionally take an object with the application options. The options include:
 
+* `apiVersion` - Version of the API exposed by the application. If not specified, the version is determined automatically using the following logic: The `NODE_ENV` environment variable is examined. If its value is "development", the version is set to the current timestamp so that it changes each time the application is restarted. Otherwise, the version is read from the main module's `package.json`.
+
 * `connectionIdleTimeout` - Timeout in milliseconds for inactivity on the HTTP connection when activity is expected from the client (waiting for the request, reading the request body, accepting the server response). If the timeout occurs before the server starts sending the response, an HTTP 408 (Request Timeout) response is sent back to the client and the connection is closed. If timeout happens after the response headers have been sent, the connection is quitely closed. The default is 30 seconds.
 
 * `maxRequestHeadersCount` - Maximum allowed number of incoming HTTP request headers. The default is 50. This corresponds to the _Node.js_ HTTP module's [maxHeadersCount](https://nodejs.org/docs/latest-v4.x/api/http.html#http_server_maxheaderscount) parameter.
@@ -116,6 +118,8 @@ The module's `createApplication()` function that builds and returns the runnable
 * `allowedOrigins` - This is used to configure the [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS). The option is a list (comma-separated string or an array) of allowed CORS origins (e.g. `http://www.example.com`, etc.). If the front-end application that calls the web service is only available from certain specific URLs, it is recommended to configure the CORS to make certain types of attacks, such as CSRF, harder. If not provided, the default is to allow any origin.
 
 * `corsPreflightMaxAge` - Part of CORS configuration, maximum age in seconds for caching CORS preflight responses on the client (see "Access-Control-Max-Age" HTTP response header). The default is 20 days.
+
+The options object is also made available to the application via the `ServiceCall` object's `appOptions` property (described below), so it can be used for custom application options as well.
 
 Once the `Application` object is created, the following methods are used to configure the web service:
 
@@ -142,6 +146,10 @@ The methods on the handler receive a `ServiceCall` object as its only argument. 
 * `id` - A string representing the unique id of the service call. The id is unique within the service process and can be used to identify requests.
 
 * `timestamp` - The timestamp when the call was received. `Date.now()` is used to get the timestamp.
+
+* `apiVersion` - Application API version (see `apiVersion` application configuration option).
+
+* `appOptions` - Application configuration options originally passed to the module's `createApplication()` function, or an empty object if none were passed.
 
 * `httpRequest` - The original _Node.js_ [http.IncomingMessage](https://nodejs.org/docs/latest-v4.x/api/http.html#http_class_http_incomingmessage) representing the HTTP request.
 
