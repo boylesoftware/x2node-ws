@@ -17,6 +17,7 @@ This is a low-level module. For higher level web service building functionality 
   * [The OPTIONS Method](#the-options-method)
 * [Authenticators](#authenticators)
   * [Actors Registry](#actors-registry)
+    * [Caching Actors Registry](#caching-actors-registry)
   * [Basic Authenticator](#basic-authenticator)
   * [JWT Authenticator](#jwt-authenticator)
 * [Authorizers](#authorizers)
@@ -237,11 +238,32 @@ Before the call is passed to the matching endpoint handler, it is passed to an a
 
 ### Actors Registry
 
-The task of request authentication has two distinctive parts: extracting the authentication information such as the caller handle and credentials from the request (e.g. from the HTTP request headers) and then looking up the actor in some sort of a user database. Two decouple the task of the actor lookup from the authenticator the framework introduces an `ActorsRegistry` interface. The interface includes one single method:
+The task of request authentication has two distinctive parts: extracting the authentication information such as the caller handle and credentials from the request (e.g. from the HTTP request headers) and then looking up the actor in some sort of a user database. To decouple the task of the actor lookup from the authenticator the framework introduces an `ActorsRegistry` interface. The interface includes one single method:
 
-* `lookupActor(handle, [creds])` - Lookup the actor in the actor registry. The actor is identified by the string argument `handle`, which is the actor handle (user id, login name, etc.) extracted by the authenticator from the request. Optionally, if the authentication scheme and the actors registry include it, the second string argument `creds` is the actor credentials (for example password) also extracted by the authenticator from the request. The method returns a `Promise` of an `Actor` object. If the promise is fulfilled with `null`, no valid actor with the specified handle and credentials exist.
+* `lookupActor(handle, [creds])` - Lookup the actor in the actor registry. The actor is identified by the string argument `handle`, which is the actor handle (user id, login name, etc.) extracted by the authenticator from the request. Optionally, if the authentication scheme and the actors registry include it, the second string argument `creds` is the actor credentials (for example the password) also extracted by the authenticator from the request. The method returns an `Actor` object or a `Promise` of it. It it is `null`, or if the returned promise is fulfilled with `null`, no valid actor with the specified handle and credentials exists. If it is a `Promise` and it is rejected, it is considered an unexpected internal error, which normally results in an HTTP 500 response.
 
 The authenticators do not have to use the actor registries, but it is a recommended practice.
+
+#### Caching Actors Registry
+
+For convenience, the module provides a class `CachingActorsRegistry`. The class wraps another actors registry and caches the lookup results for a TTL period of time in memory. For example:
+
+```javascript
+const ws = require('x2node-ws');
+
+// let's say that our app specific actors registry is implemented as a class
+const MyActorsRegistry = require('./lib/actors-registry.js');
+
+// wrap an instance of our app actors registry in a cache
+const actorsRegistry = new ws.CachingActorsRegistry(
+    new MyActorsRegistry(), 100, 10000);
+```
+
+The caching actors registry constructor takes three arguments:
+
+* `registry` - The underlying actors registry.
+* `maxCached` - Maximum number of unexpired cached actors to allow to keep in the memory. In the example above, we allow up to 100 actors to be cached. If the capacity is exceeded, the underlying registry is called directly and the result of the call is returned without caching. At the same time, an error message is logged recommending the cache capacity increase.
+* `ttl` - Cached actor TTL in milliseconds. The actor is reloaded from the underlying registry after this amount of time. In the example above we keep cached actors in memory for 10 seconds (10000 milliseconds), which is useful for increasing the performance of clients that send sequences of API calls to perform this or that operation.
 
 ### Basic Authenticator
 

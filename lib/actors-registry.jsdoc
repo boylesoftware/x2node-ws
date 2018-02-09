@@ -8,6 +8,10 @@
  * @function module:x2node-ws.ActorsRegistry#lookupActor
  * @param {string} handle Actor handle from the authenticator.
  * @param {string} [creds] Registry-specific actor credentials, if any.
- * @returns {Promise.<module:x2node-common.Actor>} Actor record, or
- * <code>null</code> if none exists for the handle.
+ * @returns {(module:x2node-common.Actor|Promise.<module:x2node-common.Actor>)}
+ * Actor record or a promise of it. Returning <code>null</code> or a promise that
+ * resolves to a <code>null</code> means the actor does not exist for the handle.
+ * If <code>creds</code> is provided, may also mean that the credentials are
+ * invalid. If a promise is returned and the promise is rejected, it indicates an
+ * unexpected internal error.
  */
