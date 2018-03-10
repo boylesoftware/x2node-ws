@@ -312,7 +312,26 @@ Marshallers are used to deserialize (unmarshal) HTTP request entities into JavaS
 
 * `serialize(obj, contentType)` - Serialize the specified by the `obj` argument object into the binary data for the specified `contentType`. The `contentType` argument may include an optional "charset" parameter. The method returns a _Node.js_ [Buffer](https://nodejs.org/docs/latest-v4.x/api/buffer.html) object with the serialized data.
 
-* `deserialize(data, contentType)` - Deserialize the [Buffer](https://nodejs.org/docs/latest-v4.x/api/buffer.html) provided as the `data` argument into a JavaScript object using the specified `contentType`. The `contentType` argument may include an optional "charset" parameter. The method returns the deserialized object. If the binary data in the buffer is invalid and cannot be deserialized, the method must throw an `X2DataError` (see [x2node-common](https://www.npmjs.com/package/x2node-common) module).
+* `deserialize(data, contentType)` - Deserialize the [Buffer](https://nodejs.org/docs/latest-v4.x/api/buffer.html) provided as the `data` argument into a JavaScript object using the specified `contentType`. The `contentType` argument may include an optional "charset" parameter. The method returns the deserialized object. If the binary data in the buffer is invalid and cannot be deserialized, the method must throw an `X2DataError` (see [x2node-common](https://www.npmjs.com/package/x2node-common) module), which will result in an HTTP 400 response. Alternatively, the method may throw a service response object.
+
+An individual handler can provide custom deserialization functions for specific content types in addition to the marshallers registered on the application. The handler can include a property named `requestEntityParsers`, which is an object with keys for the content-types and values providing the deserialization function for that content type. The deserialization function follows the signature of the marshaller interface's `deserialize()` method. Any deserializer provided by a handler superceeds the marshaller on the application.
+
+The module provides a simple deserializer function exported as `TEXT_DESERIALIZER`. All it does is it converts the binary data in the request entity to a string and returns an object with one property called `text`, which contains the text. For example:
+
+```javascript
+ws.createApplication()
+    .addEndpoint('/text', {
+        requestEntityParsers: {
+            'text/plain': ws.TEXT_DESERIALIZER
+        },
+        POST(call) {
+            console.log('ENTITY:', call.entity);
+        }
+    })
+    .run(3001);
+```
+
+Note, that `TEXT_DESERIALIZER` provided by the module only supports the following charsets: US-ASCII, ISO-8859-1, UTF-8 (the default) and UTF-16LE.
 
 ## Terminating Application
 

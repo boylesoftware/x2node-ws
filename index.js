@@ -96,3 +96,36 @@ exports.BasicAuthenticator = require('./lib/basic-authenticator.js');
 
 // export caching actors registry
 exports.CachingActorsRegistry = require('./lib/caching-actors-registry.js');
+
+/**
+ * Charset conversion map from MIME to Node's <code>Buffer</code>.
+ *
+ * @private
+ * @constant {Object.<string,string>}
+ */
+const CHARSETS_MAP = {
+	'US-ASCII': 'ascii',
+	'ISO-8859-1': 'latin1',
+	'UTF-8': 'utf8',
+	'UTF-16LE': 'utf16le'
+};
+
+/**
+ * Simple binary to string deserializer function implementation for use with
+ * handler <code>requestEntityParsers</code> property.
+ */
+exports.TEXT_DESERIALIZER = function(data, ctype) {
+
+	const m = /;\s*charset=(?:"([^"]+)"|([^"][^;]*))/i.exec(ctype);
+	try {
+		const charset = (m ? m[1] || m[2] : 'UTF-8');
+		return {
+			text: data.toString(CHARSETS_MAP[charset.toUpperCase()] || charset)
+		};
+	} catch (err) {
+		throw (new ServiceResponse(415)).setEntity({
+			errorCode: 'X2-415',
+			errorMessage: err.message
+		});
+	}
+};
