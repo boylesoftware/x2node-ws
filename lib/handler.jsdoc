@@ -29,3 +29,12 @@
  * @param {module:x2node-ws~ServiceCall} call The call.
  * @param {module:x2node-ws~ServiceResponse} call The response.
  */
+/**
+ * If present on the handler, asks the handler what response content types are
+ * supported for the call. If not present on the handler, "application/json" is
+ * assumed.
+ *
+ * @function module:x2node-ws.Handler~getRepresentations
+ * @param {module:x2node-ws~ServiceCall} call The call.
+ * @returns {Array.<string>} Supported response content types.
+ */

@@ -14,6 +14,7 @@ This is a low-level module. For higher level web service building functionality 
   * [Service Call](#service-call)
   * [Service Response](#service-response)
   * [Call Authorization](#call-authorization)
+  * [Content Negotiation](#content-negotiation)
   * [The OPTIONS Method](#the-options-method)
 * [Authenticators](#authenticators)
   * [Actors Registry](#actors-registry)
@@ -172,6 +173,8 @@ The methods on the handler receive a `ServiceCall` object as its only argument. 
 
 * `authorized` - A Boolean flag that tells if the call was authorized. By the time the call object is passed to the handler, the flag is going to be `true`.
 
+* `requestedRepresentation` - Response content type requested by the caller via an HTTP request "Accept" header. If the caller did not provide "Accept" header, defaults to the first content type returned by the handler's optional `getRepresentations()` method. If the handler does not have `getRepresentations()` method, defaults to "application/json".
+
 * `entity` - An object with the unmarshalled request payload, or `null` if none.
 
 * `entityContentType` - If `entity` is present, this is the request payload content type (all lower-case, stripped of any parameters such as "charset").
@@ -225,6 +228,10 @@ The `x2node-ws` module, in addition to the `createResponse()` function, also exp
 ### Call Authorization
 
 An enpoint handler can provide an optional method called `isAllowed()`, which is called by the framework before any service call is forwarded to the main processing method to give the handler an early chance to check if the actor associated with the call is allowed to perform it. The method, if defined, receives the `ServiceCall` object as its only argument with the `actor` property set. The method returns a Boolean or a `Promise` of it. If it is `true`, the call is forwarded to the endpoint handler's main call processing method. If it is `false`, the call is aborted and the client gets either an HTTP 401 (Unauthorized) response if the request is not authenticated (`actor` property on the call is `null`) or an HTTP 403 (Forbidden) response if it is.
+
+### Content Negotiation
+
+An endpoint handler can provide an optional method called `getRepresentations()`. The method is called by the framework if the incoming request has "Accept" header. The method takes the `ServiceCall` object as its only argument and returns an array of content types that it can generate. If handler does not have `getRepresentations()` method, it is assumed that it only generates responses in "application/json" format.
 
 ### The OPTIONS Method
 
