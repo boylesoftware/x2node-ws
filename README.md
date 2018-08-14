@@ -121,6 +121,8 @@ The module's `createApplication()` function that builds and returns the runnable
 
 * `corsPreflightMaxAge` - Part of CORS configuration, maximum age in seconds for caching CORS preflight responses on the client (see "Access-Control-Max-Age" HTTP response header). The default is 20 days.
 
+* `delay` - Number of milliseconds, by which to delay every response. Can be used in application development to emulate slow backend.
+
 The options object is also made available to the application via the `ServiceCall` object's `appOptions` property (described below), so it can be used for custom application options as well.
 
 Once the `Application` object is created, the following methods are used to configure the web service:
