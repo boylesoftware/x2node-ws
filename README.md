@@ -276,6 +276,10 @@ The caching actors registry constructor takes three arguments:
 * `maxCached` - Maximum number of unexpired cached actors to allow to keep in the memory. In the example above, we allow up to 100 actors to be cached. If the capacity is exceeded, the underlying registry is called directly and the result of the call is returned without caching. At the same time, an error message is logged recommending the cache capacity increase.
 * `ttl` - Cached actor TTL in milliseconds. The actor is reloaded from the underlying registry after this amount of time. In the example above we keep cached actors in memory for 10 seconds (10000 milliseconds), which is useful for increasing the performance of clients that send sequences of API calls to perform this or that operation.
 
+The caching registry instance exposes the following methods:
+
+* `invalidateCachedActor(handle)` - If actor with the specified handle is cached, invalidate the cache entry. This method is useful when the application changes something about the actor, for example the actor permissions, and wants the authenticators to start using the updated actor immediately instead of waiting for the cached actor TTL expiration.
+
 ### Basic Authenticator
 
 The `x2node-ws` module includes an authenticator implementation for the "Basic" scheme (see [RFC 7617](https://tools.ietf.org/html/rfc7617)). The authenticator class is exported by the module as `BasicAuthenticator`. The constructor takes two arguments: the actors registry (an implementation of the `ActorsRegistry` interface) and an optional authentication realm with the default value of "Web Service". For example:
