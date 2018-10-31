@@ -1,6 +1,6 @@
 {
   "name": "x2node-ws",
-  "version": "1.6.2",
+  "version": "1.7.0",
   "description": "RESTful web services framework.",
   "keywords": [
     "webservice",
@@ -31,6 +31,6 @@
     "x2node-common": "^1.5.1"
   },
   "devDependencies": {
-    "eslint": "^5.6.1"
+    "eslint": "^5.8.0"
   }
 }
