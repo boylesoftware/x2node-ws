@@ -28,9 +28,9 @@
     "node": ">=6.10.3"
   },
   "dependencies": {
-    "x2node-common": "^1.5.1"
+    "x2node-common": "^1.5.2"
   },
   "devDependencies": {
-    "eslint": "^5.8.0"
+    "eslint": "^5.9.0"
   }
 }
