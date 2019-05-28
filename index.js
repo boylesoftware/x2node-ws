@@ -94,6 +94,9 @@ exports.isResponse = function(obj) {
 // export basic authenticator
 exports.BasicAuthenticator = require('./lib/basic-authenticator.js');
 
+// export Bearer authenticator
+exports.BearerAuthenticator = require('./lib/bearer-authenticator.js');
+
 // export caching actors registry
 exports.CachingActorsRegistry = require('./lib/caching-actors-registry.js');
 
